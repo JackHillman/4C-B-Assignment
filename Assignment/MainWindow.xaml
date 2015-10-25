@@ -3,22 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Motor Manager" Height="321" Width="444">
     <Grid>
-        <GroupBox Header="Customer Details" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Margin="10,10,0,0">
+        <GroupBox x:Name="customerDetails" Header="Customer Details" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Margin="10,10,0,0">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="146">
                 <Label Margin="0, 5, 0, 0" Content="Customer Name"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text=""/>
-                <Label Margin="0, 5, 0, 0" Content="Customer Number"/>
+                <Label Margin="0, 5, 0, 0" Content="Customer Phone"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text=""/>
             </StackPanel>
         </GroupBox>
         <StackPanel Margin="0,15,10,0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <Button Content="Save" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Save" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
             <Button Content="Reset" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75"/>
             <Button IsDefault="True" Content="Calculate" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75"/>
-            <Button IsCancel="True" Content="Exit" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75"/>
+            <Button IsCancel="True" Content="Exit" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
         </StackPanel>
-        <GroupBox Header="Sale Details" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Margin="176,10,0,0">
+        <GroupBox x:Name="salesDetails" Header="Sale Details" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Margin="176,10,0,0">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="146">
                 <Label Margin="0, 5, 0, 0" Content="Trade In Value"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text=""/>
