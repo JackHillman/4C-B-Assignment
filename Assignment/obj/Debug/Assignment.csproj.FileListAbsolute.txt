@@ -1,0 +1,13 @@
+E:\4C#B\Assignment\Assignment\Assignment\bin\Debug\Assignment.exe.config
+E:\4C#B\Assignment\Assignment\Assignment\bin\Debug\Assignment.exe
+E:\4C#B\Assignment\Assignment\Assignment\bin\Debug\Assignment.pdb
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\MainWindow.baml
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\MainWindow.g.cs
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\App.g.cs
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment_MarkupCompile.cache
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.g.resources
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.Properties.Resources.resources
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.csproj.GenerateResource.Cache
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.exe
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.pdb
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.csprojResolveAssemblyReference.cache
