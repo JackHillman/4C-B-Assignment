@@ -64,13 +64,40 @@ namespace Assignment
                 vehiclePrice.Focus();
             }
 
-            subTotal = price - trade;
+            // 'Business' Logic
+            if (trade > price)
+            {
+                subTotal = 0;
+            }
+            else
+            {
+                subTotal = price - trade;
+            }
             gstTotal = price * GST;
             total = subTotal + gstTotal;
 
             this.subTotal.Content = subTotal.ToString("C");
             this.gstTotal.Content = gstTotal.ToString("C");
             this.total.Content = total.ToString("C");
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to reset?", "Reset form", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                customerName.Clear();
+                customerPhone.Clear();
+                vehiclePrice.Clear();
+                tradeInValue.Clear();
+                subTotal.Content = null;
+                gstTotal.Content = null;
+                total.Content = null;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            customerName.Focus();
         }
     }
 }
