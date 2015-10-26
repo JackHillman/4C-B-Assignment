@@ -25,14 +25,52 @@ namespace Assignment
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Save_Customer_Details(object sender, RoutedEventArgs e)
+        {
+            customerDetails.IsEnabled = false;
+        }
+
+        private void Close_Application(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Calculate_Totals(object sender, RoutedEventArgs e)
         {
-            customerDetails.IsEnabled = false;
+            const decimal GST = 0.1m;
+            decimal price = 0, trade = 0, subTotal = 0, gstTotal = 0, total = 0;
+            try
+            {
+                price = decimal.Parse(vehiclePrice.Text);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Error! Vehicle price required as a decimal", "Error!", MessageBoxButton.OK);
+                vehiclePrice.Clear();
+                vehiclePrice.Focus();
+            }
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(tradeInValue.Text))
+                {
+                    trade = decimal.Parse(tradeInValue.Text);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error! Trade-in price required as a decimal", "Error!", MessageBoxButton.OK);
+                vehiclePrice.Clear();
+                vehiclePrice.Focus();
+            }
+
+            subTotal = price - trade;
+            gstTotal = price * GST;
+            total = subTotal + gstTotal;
+
+            this.subTotal.Content = subTotal.ToString("C");
+            this.gstTotal.Content = gstTotal.ToString("C");
+            this.total.Content = total.ToString("C");
         }
     }
 }
