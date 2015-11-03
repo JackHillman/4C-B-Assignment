@@ -30,90 +30,84 @@ namespace Assignment
 
         private void Save_Customer_Details(object sender, RoutedEventArgs e)
         {
-            // Disable the customer details groupbox
-            customerDetails.IsEnabled = false;
-            // Set focus
-            vehiclePrice.Focus();
+            if (!(String.IsNullOrEmpty(customerName.Text) || String.IsNullOrEmpty(customerPhone.Text))) // If customer name and phone are not empty
+            {
+                customerDetails.IsEnabled = false; // Disable the customer details groupbox
+                vehiclePrice.Focus(); // Set focus
+            }
+            else
+            {
+                MessageBox.Show("Customer details must be filled in before saving"); // Prompt user to enter data
+
+                if (String.IsNullOrEmpty(customerName.Text))
+                {
+                    customerName.Focus(); // Set focus to Customer Name
+                }
+                else
+                {
+                    customerPhone.Focus(); // Set focus to Customer Phone
+                }
+            }
         }
 
         private void Close_Application(object sender, RoutedEventArgs e)
         {
-            // Close application
-            this.Close();
+            this.Close(); // Close application
         }
 
         private void Calculate_Totals(object sender, RoutedEventArgs e)
         {
-            // Set constant GST to decimal 0.1
-            const decimal GST = 0.1m;
-            // Set vehicle price, trade in, sub total, gst total and total total to 0
-            decimal price = 0, trade = 0, subTotal = 0, gstTotal = 0, total = 0;
+            const decimal GST = 0.1m; // Set constant GST to decimal 0.1
+            decimal price = 0, trade = 0, subTotal = 0, gstTotal = 0, total = 0; // Set vehicle price, trade in, sub total, gst total and total total to 0
             try
             {
-                // Try to parse decimal
-                price = decimal.Parse(vehiclePrice.Text);
+                price = decimal.Parse(vehiclePrice.Text); // Try to parse decimal
             }
             catch (FormatException)
             {
-                // Prompt user with error
-                MessageBox.Show("Error! Vehicle price required as a decimal", "Error!", MessageBoxButton.OK);
-                // Clear textbox
-                vehiclePrice.Clear();
-                // Set focus to textbox
-                vehiclePrice.Focus();
-                // Exit
-                return;
+                MessageBox.Show("Error! Vehicle price required as a decimal", "Error!", MessageBoxButton.OK); // Prompt user with error
+                vehiclePrice.Clear(); // Clear textbox
+                vehiclePrice.Focus(); // Set focus to textbox
+                return; // Exit
             }
 
             try
             {
-                // If trade in isn't null or whitespace
-                if (!string.IsNullOrWhiteSpace(tradeInValue.Text))
+                if (!String.IsNullOrWhiteSpace(tradeInValue.Text)) // If trade in isn't null or whitespace
                 {
-                    // Try to parse decimal
-                    trade = decimal.Parse(tradeInValue.Text);
+                    trade = decimal.Parse(tradeInValue.Text); // Try to parse decimal
                 }
             }
             catch
             {
-                // Prompt user with error
-                MessageBox.Show("Error! Trade-in price required as a decimal", "Error!", MessageBoxButton.OK);
-                // Clear textbox
-                vehiclePrice.Clear();
-                // Set focus to textbox
-                vehiclePrice.Focus();
-                // Exit
-                return;
+                MessageBox.Show("Error! Trade-in price required as a decimal", "Error!", MessageBoxButton.OK); // Prompt user with error
+                vehiclePrice.Clear(); // Clear textbox
+                vehiclePrice.Focus(); // Set focus to textbox
+                return; // Exit
             }
 
-            // If 3 year warrenty is checked
-            if ((bool)war3.IsChecked)
+            if ((bool)war3.IsChecked) // If 3 year warrenty is checked
             {
                 price += price*0.1m;
             }
-            // If 5 year warrenty is checked
-            else if ((bool)war5.IsChecked)
+            else if ((bool)war5.IsChecked) // If 5 year warrenty is checked
             {
                 price += price * 0.2m;
             }
 
-            // Call getExtras
-            price += getExtras();
+            price += getExtras(); // Call getExtras
 
-            // Business 'Logic'
-            if (trade > price)
+            if (trade > price) // Business 'Logic'
             {
                 subTotal = 0;
             }
             else
             {
-                // Subtotal =  vehicle price - trade in price
-                subTotal = price - trade;
+                subTotal = price - trade; // Subtotal =  vehicle price - trade in price
             }
-            // GST = vehicle price * 0.1
-            gstTotal = subTotal * GST;
-            // Total = Subtotal + GST
-            total = subTotal + gstTotal;
+
+            gstTotal = subTotal * GST; // GST = vehicle price * 0.
+            total = subTotal + gstTotal; // Total = Subtotal + GST
 
             // Set labels to calculated values
             this.subTotal.Content = subTotal.ToString("C");
@@ -140,38 +134,32 @@ namespace Assignment
                 total.Content = null;
                 // Enable Customer Details
                 customerDetails.IsEnabled = true;
+                // Set focus
+                vehiclePrice.Focus();
             }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Set focus to Customer Name Textbox
-            customerName.Focus();
+            customerName.Focus(); // Set focus to Customer Name Textbox
         }
 
         private void View_Report(object sender, RoutedEventArgs e)
         {
-            // Show sales report
-            MessageBox.Show("Sale Count: " + reportCount.ToString() + "\n\nTotal Sales: " + totalSales.ToString("C"));
+            MessageBox.Show("Sale Count: " + reportCount.ToString() + "\n\nTotal Sales: " + totalSales.ToString("C")); // Show sales report
         }
 
         private decimal getExtras()
         {
             decimal total = 0;
-            // If all are unchecked
-            if (!(bool)windowTinting.IsChecked && !(bool)ducoProtection.IsChecked && !(bool)gps.IsChecked && !(bool)soundSystem.IsChecked) { return 0m; }
+            if (!(bool)windowTinting.IsChecked && !(bool)ducoProtection.IsChecked && !(bool)gps.IsChecked && !(bool)soundSystem.IsChecked) { return 0m; } // If all are unchecked
             else
-            {
-                // If windowTiniting is checked add 150 to total
-                if ((bool)windowTinting.IsChecked) { total += 150m; }
-                // If ducoProtection is checked add 180 to total
-                if ((bool)ducoProtection.IsChecked) { total += 180m; }
-                // If gps is checked add 320 to total
-                if ((bool)gps.IsChecked) { total += 320m; }
-                // If soundSystem is checked add 350 to total
-                if ((bool)soundSystem.IsChecked) { total += 350m; }
-                // return total
-                return total;
+            { 
+                if ((bool)windowTinting.IsChecked) { total += 150m; } // If windowTiniting is checked add 150 to total
+                if ((bool)ducoProtection.IsChecked) { total += 180m; } // If ducoProtection is checked add 180 to total
+                if ((bool)gps.IsChecked) { total += 320m; } // If gps is checked add 320 to total
+                if ((bool)soundSystem.IsChecked) { total += 350m; } // If soundSystem is checked add 350 to total
+                return total; // return total
             }
         }
     }
