@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Assignment.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Motor Manager" Height="337" Width="573" Loaded="Window_Loaded">
+        Title="Motor Manager" Height="476" Width="790" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -15,33 +15,51 @@
                 <TextBox VerticalContentAlignment="Center" TabIndex="20" x:Name="customerPhone" ToolTip="This is the customers phone name" Height="23" TextWrapping="Wrap" Text=""/>
             </StackPanel>
         </GroupBox>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="150" Grid.Column="1" Margin="0,56,0,0">
-            <Button TabIndex="50" x:Name="saveButton" ToolTip="Save the customer's details" Content="Save" Margin="5,10,5,5" VerticalAlignment="Top" Click="Save_Customer_Details" Background="#FFF9F9F9" BorderBrush="Gray"/>
-            <Button TabIndex="70" x:Name="resetButton" ToolTip="Reset this form" IsCancel="True" Content="Reset" Margin="5,5,5,5" VerticalAlignment="Top" Click="resetButton_Click" Background="#FFF9F9F9" BorderBrush="Gray"/>
-            <Button TabIndex="60" x:Name="calcButton" ToolTip="Calculate the total cost" IsDefault="True" Content="Calculate" Margin="5,5,5,5" VerticalAlignment="Top" Click="Calculate_Totals" Background="#FFF9F9F9" BorderBrush="Gray"/>
-            <Button TabIndex="80" x:Name="exitButton" ToolTip="Exit the application" Content="Exit" Margin="5,5,5,5" VerticalAlignment="Top" Click="Close_Application" Background="#FFF9F9F9" BorderBrush="Gray"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="150" Grid.Column="1" Margin="0,56,0,0" Height="243" VerticalAlignment="Top">
+            <Button Padding="5" TabIndex="50" x:Name="saveButton" ToolTip="Save the customer's details" Content="Save" Margin="5,10,5,5" VerticalAlignment="Top" Click="Save_Customer_Details" Background="#FFF9F9F9" BorderBrush="Gray"/>
+            <Button Padding="5" TabIndex="70" x:Name="resetButton" ToolTip="Reset this form" IsCancel="True" Content="Reset" Margin="5,5,5,5" VerticalAlignment="Top" Click="resetButton_Click" Background="#FFF9F9F9" BorderBrush="Gray"/>
+            <Button Padding="5" TabIndex="60" x:Name="calcButton" ToolTip="Calculate the total cost" IsDefault="True" Content="Calculate" Margin="5,5,5,5" VerticalAlignment="Top" Click="Calculate_Totals" Background="#FFF9F9F9" BorderBrush="Gray"/>
+            <Button Padding="5" TabIndex="80" x:Name="exitButton" ToolTip="Exit the application" Content="Exit" Margin="5,5,5,5" VerticalAlignment="Top" Click="Close_Application" Background="#FFF9F9F9" BorderBrush="Gray"/>
+            <Button Padding="5" TabIndex="90" x:Name="dailyReport" ToolTip="View the daily report" IsEnabled="False" Content="View Daily Report" Margin="5,15,5,5" VerticalAlignment="Top" Click="View_Report" Background="#FFF9F9F9" BorderBrush="Gray"/>
 
         </StackPanel>
-        <GroupBox x:Name="salesDetails" Header="Sale Details" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="193,56,0,0" Height="151" Width="178">
+        <GroupBox x:Name="salesDetails" Header="Sale Details" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,56,0,0" Height="151" Width="178">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="146">
-                <Label Margin="0, 5, 0, 0" Content="Trade In Value"/>
-                <TextBox VerticalContentAlignment="Center" TabIndex="30" x:Name="tradeInValue" ToolTip="End in the trade in value" Height="23" TextWrapping="Wrap" Text=""/>
                 <Label Margin="0, 5, 0, 0" Content="Vehicle Price"/>
-                <TextBox VerticalContentAlignment="Center" TabIndex="40" x:Name="vehiclePrice" ToolTip="Enter the sale vehicle price" Height="23" TextWrapping="Wrap" Text=""/>
+                <TextBox VerticalContentAlignment="Center" TabIndex="30" x:Name="vehiclePrice" ToolTip="Enter the sale vehicle price" Height="23" TextWrapping="Wrap" Text=""/>
+                <Label Margin="0, 5, 0, 0" Content="Trade In Value"/>
+                <TextBox VerticalContentAlignment="Center" TabIndex="40" x:Name="tradeInValue" ToolTip="End in the trade in value" Height="23" TextWrapping="Wrap" Text=""/>
             </StackPanel>
         </GroupBox>
         <Image Source="/Assignment;component/images/logo.png" Height="66" Margin="21,0,21,40" VerticalAlignment="Bottom" Grid.Column="1"/>
         <Label Content="Written By Jack Hillman" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Foreground="#FF919191" Height="26" Width="134" Grid.Column="1"/>
         <Label x:Name="header" Content="Motor Manager - The manager that manages your motor!" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Roboto" FontSize="18.667" Foreground="#FF8D2008" Height="40" Width="545" Grid.ColumnSpan="2"/>
-        <Grid Margin="10,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="78" Width="95">
+        <Grid Margin="419,129,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="78" Width="178">
             <Label Content="Sub Total:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label Content="GST:" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top"/>
             <Label Content="Total Price:" HorizontalAlignment="Left" Margin="0,52,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="subTotal" HorizontalAlignment="Left" Margin="85,0,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="gstTotal" HorizontalAlignment="Left" Margin="85,26,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="total" HorizontalAlignment="Left" Margin="85,52,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="subTotal" HorizontalAlignment="Left" Margin="85,0,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label x:Name="gstTotal" HorizontalAlignment="Left" Margin="85,26,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Label x:Name="total" HorizontalAlignment="Left" Margin="85,52,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
 
         </Grid>
+        <GroupBox x:Name="warranty" Header="Warranty" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="10,226,0,0" Height="151" Width="178">
+            <StackPanel HorizontalAlignment="Left" Height="109" VerticalAlignment="Top" >
+                <RadioButton x:Name="war1" GroupName="war" IsChecked="True" Margin="10" Content="1 Year (Included)"/>
+                <RadioButton x:Name="war3" GroupName="war" Margin="10" Content="3 Years (+10%)"/>
+                <RadioButton x:Name="war5" GroupName="war" Margin="10" Content="5 Years (+20%)"/>
+            </StackPanel>
+
+        </GroupBox>
+        <GroupBox x:Name="extras" Header="Extras" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,226,0,0" Width="395">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox x:Name="windowTinting" Margin="10" Content="Window Tinting ($150)" />
+                <CheckBox x:Name="ducoProtection" Margin="10" Content="Duco Protection ($180)" />
+                <CheckBox x:Name="gps" Margin="10" Content="GPS Navigational System ($320)" />
+                <CheckBox x:Name="soundSystem" Margin="10" Content="Delux Sound System ($350)" />
+            </StackPanel>
+
+        </GroupBox>
 
     </Grid>
 </Window>
