@@ -20,8 +20,8 @@ namespace Assignment
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int reportCount = 0;
-        public decimal totalSales = 0m;
+        public int cReportCount = 0;
+        public decimal cTotalSales = 0m;
 
         public MainWindow()
         {
@@ -57,7 +57,6 @@ namespace Assignment
 
         private void Calculate_Totals(object sender, RoutedEventArgs e)
         {
-            const decimal GST = 0.1m; // Set constant GST to decimal 0.1
             decimal price = 0, trade = 0, subTotal = 0, gstTotal = 0, total = 0; // Set vehicle price, trade in, sub total, gst total and total total to 0
             try
             {
@@ -88,25 +87,27 @@ namespace Assignment
 
             if ((bool)war3.IsChecked) // If 3 year warrenty is checked
             {
-                price += price*0.1m;
+                price += price * Constants.WARRENTY_3_YEARS;
             }
             else if ((bool)war5.IsChecked) // If 5 year warrenty is checked
             {
-                price += price * 0.2m;
+                price += price * Constants.WARRENTY_5_YEARS;
             }
 
             price += getExtras(); // Call getExtras
 
+            gstTotal = price * Constants.GST; // GST = vehicle price * 0.1
+
             if (trade > price) // Business 'Logic'
             {
                 subTotal = 0;
+                MessageBox.Show("Trade-In is greater than Vehicle Price, no refund will be given", "Eh", MessageBoxButton.OK);
             }
             else
             {
                 subTotal = price - trade; // Subtotal =  vehicle price - trade in price
             }
 
-            gstTotal = subTotal * GST; // GST = vehicle price * 0.
             total = subTotal + gstTotal; // Total = Subtotal + GST
 
             // Set labels to calculated values
@@ -114,9 +115,9 @@ namespace Assignment
             this.gstTotal.Content = gstTotal.ToString("C");
             this.total.Content = total.ToString("C");
 
-            reportCount++;
+            cReportCount++;
             dailyReport.IsEnabled = true;
-            totalSales += total;
+            cTotalSales += total;
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
@@ -146,7 +147,7 @@ namespace Assignment
 
         private void View_Report(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Sale Count: " + reportCount.ToString() + "\n\nTotal Sales: " + totalSales.ToString("C")); // Show sales report
+            MessageBox.Show("Sale Count: " + cReportCount.ToString() + "\n\nTotal Sales: " + cTotalSales.ToString("C")); // Show sales report
         }
 
         private decimal getExtras()
@@ -155,10 +156,10 @@ namespace Assignment
             if (!(bool)windowTinting.IsChecked && !(bool)ducoProtection.IsChecked && !(bool)gps.IsChecked && !(bool)soundSystem.IsChecked) { return 0m; } // If all are unchecked
             else
             { 
-                if ((bool)windowTinting.IsChecked) { total += 150m; } // If windowTiniting is checked add 150 to total
-                if ((bool)ducoProtection.IsChecked) { total += 180m; } // If ducoProtection is checked add 180 to total
-                if ((bool)gps.IsChecked) { total += 320m; } // If gps is checked add 320 to total
-                if ((bool)soundSystem.IsChecked) { total += 350m; } // If soundSystem is checked add 350 to total
+                if ((bool)windowTinting.IsChecked) { total += Constants.WINDOW_TINTING; } // If windowTiniting is checked add 150 to total
+                if ((bool)ducoProtection.IsChecked) { total += Constants.DUCO_PROTECTION; } // If ducoProtection is checked add 180 to total
+                if ((bool)gps.IsChecked) { total += Constants.GPS_NAVIGATIONAL_SYSTEM; } // If gps is checked add 320 to total
+                if ((bool)soundSystem.IsChecked) { total += Constants.DELUX_SOUND_SYSTEM; } // If soundSystem is checked add 350 to total
                 return total; // return total
             }
         }
