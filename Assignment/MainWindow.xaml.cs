@@ -20,8 +20,6 @@ namespace Assignment
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int cReportCount = 0;
-        public decimal cTotalSales = 0m;
 
         public MainWindow()
         {
@@ -57,86 +55,65 @@ namespace Assignment
 
         private void Calculate_Totals(object sender, RoutedEventArgs e)
         {
-            decimal price = 0, trade = 0, subTotal = 0, gstTotal = 0, total = 0; // Set vehicle price, trade in, sub total, gst total and total total to 0
-            try
-            {
-                price = decimal.Parse(vehiclePrice.Text); // Try to parse decimal
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("Error! Vehicle price required as a decimal", "Error!", MessageBoxButton.OK); // Prompt user with error
-                vehiclePrice.Clear(); // Clear textbox
-                vehiclePrice.Focus(); // Set focus to textbox
-                return; // Exit
-            }
+            Sale sale;
 
             try
             {
-                if (!String.IsNullOrWhiteSpace(tradeInValue.Text)) // If trade in isn't null or whitespace
-                {
-                    trade = decimal.Parse(tradeInValue.Text); // Try to parse decimal
-                }
+                sale = new Sale(vehiclePrice, tradeInValue);
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("Error! Trade-in price required as a decimal", "Error!", MessageBoxButton.OK); // Prompt user with error
-                vehiclePrice.Clear(); // Clear textbox
-                vehiclePrice.Focus(); // Set focus to textbox
-                return; // Exit
+                MessageBox.Show(ex.Message);
+                return;
             }
 
-            if ((bool)war3.IsChecked) // If 3 year warrenty is checked
+
+            if ((bool)war3.IsChecked) { sale.Price *= Constants.WARRANTY_3_YEARS; }
+            else if ((bool)war5.IsChecked) { sale.Price *= Constants.WARRANTY_5_YEARS; }
+
+            sale.Price += getExtras();
+
+            try
             {
-                price += price * Constants.WARRENTY_3_YEARS;
+                sale.CalculateTotal(subTotal, gstTotal, total);
             }
-            else if ((bool)war5.IsChecked) // If 5 year warrenty is checked
+            catch (Exception ex)
             {
-                price += price * Constants.WARRENTY_5_YEARS;
+                MessageBox.Show(ex.Message);
             }
 
-            price += getExtras(); // Call getExtras
-
-            gstTotal = price * Constants.GST; // GST = vehicle price * 0.1
-
-            if (trade > price) // Business 'Logic'
-            {
-                subTotal = 0;
-                MessageBox.Show("Trade-In is greater than Vehicle Price, no refund will be given", "Eh", MessageBoxButton.OK);
-            }
-            else
-            {
-                subTotal = price - trade; // Subtotal =  vehicle price - trade in price
-            }
-
-            total = subTotal + gstTotal; // Total = Subtotal + GST
-
-            // Set labels to calculated values
-            this.subTotal.Content = subTotal.ToString("C");
-            this.gstTotal.Content = gstTotal.ToString("C");
-            this.total.Content = total.ToString("C");
-
-            cReportCount++;
             dailyReport.IsEnabled = true;
-            cTotalSales += total;
+
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
+            TextBox[] textBox = new TextBox[] {
+                customerName,
+                customerPhone,
+                vehiclePrice,
+                tradeInValue,
+            };
+            Label[] label = new Label[] {
+                subTotal,
+                gstTotal,
+                total,
+            };
+
             // Prompt user if they want to reset
             if (MessageBox.Show("Are you sure you want to reset?", "Reset form", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 // Clear all values
-                customerName.Clear();
-                customerPhone.Clear();
-                vehiclePrice.Clear();
-                tradeInValue.Clear();
-                subTotal.Content = null;
-                gstTotal.Content = null;
-                total.Content = null;
-                // Enable Customer Details
-                customerDetails.IsEnabled = true;
-                // Set focus
-                vehiclePrice.Focus();
+                foreach (TextBox t in textBox)
+                {
+                    t.Clear();
+                }
+                foreach (Label l in label)
+                {
+                    l.Content = null;
+                }
+                customerDetails.IsEnabled = true; // Enable Customer Details
+                customerName.Focus(); // Set focus
             }
         }
 
@@ -147,7 +124,7 @@ namespace Assignment
 
         private void View_Report(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Sale Count: " + cReportCount.ToString() + "\n\nTotal Sales: " + cTotalSales.ToString("C")); // Show sales report
+            MessageBox.Show("Sale Count: " + Sale.ReportCount.ToString() + "\n\nTotal Sales: " + Sale.TotalSales.ToString("C")); // Show sales report
         }
 
         private decimal getExtras()

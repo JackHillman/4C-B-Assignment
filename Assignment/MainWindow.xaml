@@ -26,9 +26,9 @@
         <GroupBox x:Name="salesDetails" Header="Sale Details" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="10,227,0,0" Height="151" Width="178">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="146">
                 <Label Margin="0, 5, 0, 0" Content="Vehicle Price"/>
-                <TextBox VerticalContentAlignment="Center" TabIndex="30" x:Name="vehiclePrice" ToolTip="Enter the sale vehicle price" Height="23" TextWrapping="Wrap" Text=""/>
+                <TextBox VerticalContentAlignment="Center" TabIndex="30" x:Name="vehiclePrice" ToolTip="Vehicle Price" Height="23" TextWrapping="Wrap" Text=""/>
                 <Label Margin="0, 5, 0, 0" Content="Trade In Value"/>
-                <TextBox VerticalContentAlignment="Center" TabIndex="40" x:Name="tradeInValue" ToolTip="End in the trade in value" Height="23" TextWrapping="Wrap" Text=""/>
+                <TextBox VerticalContentAlignment="Center" TabIndex="40" x:Name="tradeInValue" ToolTip="Trade In" Height="23" TextWrapping="Wrap" Text=""/>
             </StackPanel>
         </GroupBox>
         <Image Source="/Assignment;component/images/logo.png" Height="66" Margin="21,0,21,40" VerticalAlignment="Bottom" Grid.Column="1"/>

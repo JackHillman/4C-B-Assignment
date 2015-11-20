@@ -17,9 +17,9 @@ namespace Assignment
         #endregion
 
         #region Warrenty
-            // Warrenty
-            public const decimal WARRENTY_3_YEARS = 0.1m;
-            public const decimal WARRENTY_5_YEARS = 0.2m;
+            // Warranty
+            public const decimal WARRANTY_3_YEARS = 1.1m;
+            public const decimal WARRANTY_5_YEARS = 1.2m;
         #endregion
 
         #region MISC
