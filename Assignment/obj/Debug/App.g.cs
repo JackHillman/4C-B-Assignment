@@ -60,6 +60,8 @@ namespace Assignment {
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         public static void Main() {
+            SplashScreen splashScreen = new SplashScreen("images/splash.png");
+            splashScreen.Show(true);
             Assignment.App app = new Assignment.App();
             app.InitializeComponent();
             app.Run();

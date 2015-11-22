@@ -10,16 +10,24 @@ namespace Assignment
 {
     class Sale
     {
-        public decimal Price, Trade, SubTotal, GstTotal, Total;
-        public static int ReportCount = 0;
-        public static decimal TotalSales = 0m;
+        public decimal Price { get; set; }
+        public decimal Trade { get; set; }
+        public decimal SubTotal { get; set; }
+        public decimal GstTotal { get; set; }
+        public decimal Total { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public static int ReportCount { get; set; } = 0;
+        public static decimal TotalSales { get; set; } = 0m;
 
-        public Sale(TextBox _priceBox, TextBox _tradeBox)
+        public Sale(TextBox _priceBox, TextBox _tradeBox, TextBox _name, TextBox _phone)
         {
             try
             {
                 Price = Parse(_priceBox);
                 Trade = Parse(_tradeBox);
+                Name = _name.Text;
+                Phone = _phone.Text;
             }
             catch
             {
@@ -57,7 +65,7 @@ namespace Assignment
             if (Trade > Price)
             {
                 SubTotal = 0;
-                throw new Exception("Trade-In is greater than Vehicle Price, no refund will be given");
+                MessageBox.Show("Trade-In is greater than Vehicle Price, no refund will be given");
             }
             else
             {
@@ -74,6 +82,12 @@ namespace Assignment
             subTotal.Content = SubTotal.ToString("C");
             gstTotal.Content = GstTotal.ToString("C");
             total.Content = Total.ToString("C");
+        }
+
+        public override string ToString()
+        {
+            string returnString = String.Format("Name {0}, Phone {1}, Price {2}, Trade {3}, Total {4}", Name, Phone, Price, Trade, Total);
+            return returnString;
         }
     }
 }

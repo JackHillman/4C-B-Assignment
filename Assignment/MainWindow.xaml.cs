@@ -21,6 +21,9 @@ namespace Assignment
     public partial class MainWindow : Window
     {
 
+        List<Sale> SaleList; // Init Sale List
+        Sale sale; // Init sale
+
         public MainWindow()
         {
             InitializeComponent();
@@ -55,35 +58,22 @@ namespace Assignment
 
         private void Calculate_Totals(object sender, RoutedEventArgs e)
         {
-            Sale sale;
 
             try
             {
-                sale = new Sale(vehiclePrice, tradeInValue);
+                sale = new Sale(vehiclePrice, tradeInValue, customerName, customerPhone); // Try to init
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return;
+                MessageBox.Show(ex.Message); // Show error message
+                return; // Exit
             }
 
-
-            if ((bool)war3.IsChecked) { sale.Price *= Constants.WARRANTY_3_YEARS; }
-            else if ((bool)war5.IsChecked) { sale.Price *= Constants.WARRANTY_5_YEARS; }
-
-            sale.Price += getExtras();
-
-            try
-            {
-                sale.CalculateTotal(subTotal, gstTotal, total);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            dailyReport.IsEnabled = true;
-
+            sale.Price = getInsurance(sale.Price); // Add insurance and warranty
+            sale.CalculateTotal(subTotal, gstTotal, total); // Calculate totals and apply to labels
+            SaleList.Add(sale); // Add sale to list of sales
+            dailyReport.IsEnabled = true; // Enable daily reports
+            MessageBox.Show(sale.ToString());
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
@@ -104,14 +94,8 @@ namespace Assignment
             if (MessageBox.Show("Are you sure you want to reset?", "Reset form", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 // Clear all values
-                foreach (TextBox t in textBox)
-                {
-                    t.Clear();
-                }
-                foreach (Label l in label)
-                {
-                    l.Content = null;
-                }
+                foreach (TextBox t in textBox) { t.Clear(); }
+                foreach (Label l in label) { l.Content = null; }
                 customerDetails.IsEnabled = true; // Enable Customer Details
                 customerName.Focus(); // Set focus
             }
@@ -120,6 +104,7 @@ namespace Assignment
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             customerName.Focus(); // Set focus to Customer Name Textbox
+            SaleList = new List<Sale>(); // Init list of sales
         }
 
         private void View_Report(object sender, RoutedEventArgs e)
@@ -127,10 +112,16 @@ namespace Assignment
             MessageBox.Show("Sale Count: " + Sale.ReportCount.ToString() + "\n\nTotal Sales: " + Sale.TotalSales.ToString("C")); // Show sales report
         }
 
+        private void Open_About(object sender, RoutedEventArgs e)
+        {
+            About about = new About(); // Init about window
+            about.ShowDialog(); // Open about window as dialog
+        }
+
         private decimal getExtras()
         {
             decimal total = 0;
-            if (!(bool)windowTinting.IsChecked && !(bool)ducoProtection.IsChecked && !(bool)gps.IsChecked && !(bool)soundSystem.IsChecked) { return 0m; } // If all are unchecked
+            if (!(bool)windowTinting.IsChecked && !(bool)ducoProtection.IsChecked && !(bool)gps.IsChecked && !(bool)soundSystem.IsChecked) { return 0m; } // If all are unchecked return 0
             else
             { 
                 if ((bool)windowTinting.IsChecked) { total += Constants.WINDOW_TINTING; } // If windowTiniting is checked add 150 to total
@@ -139,6 +130,18 @@ namespace Assignment
                 if ((bool)soundSystem.IsChecked) { total += Constants.DELUX_SOUND_SYSTEM; } // If soundSystem is checked add 350 to total
                 return total; // return total
             }
+        }
+
+        private decimal getInsurance(decimal price)
+        {
+            // Add insurance
+            if((bool)ins1.IsChecked) { price *= Constants.INSURANCE_U25; }
+            else if ((bool)ins2.IsChecked) { price *= Constants.INSURANCE_O25; }
+            // Add warranty
+            if ((bool)war3.IsChecked) { price *= Constants.WARRANTY_3_YEARS; }
+            else if ((bool)war5.IsChecked) { price *= Constants.WARRANTY_5_YEARS; }
+            price += getExtras(); // Calculate Extras
+            return price; // Return calculated price
         }
     }
 }

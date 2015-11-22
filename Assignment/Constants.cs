@@ -16,6 +16,12 @@ namespace Assignment
             public const decimal DELUX_SOUND_SYSTEM = 350m;
         #endregion
 
+        #region Insurance
+        // Insurance
+        public const decimal INSURANCE_U25 = 1.2m;
+        public const decimal INSURANCE_O25 = 1.1m;
+        #endregion
+
         #region Warrenty
             // Warranty
             public const decimal WARRANTY_3_YEARS = 1.1m;

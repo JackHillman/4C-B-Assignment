@@ -11,3 +11,6 @@ E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.csproj.GenerateRes
 E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.exe
 E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.pdb
 E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment.csprojResolveAssemblyReference.cache
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\About.g.cs
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\Assignment_MarkupCompile.lref
+E:\4C#B\Assignment\Assignment\Assignment\obj\Debug\About.baml

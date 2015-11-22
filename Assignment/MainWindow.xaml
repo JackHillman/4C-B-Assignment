@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Assignment.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Motor Manager" Height="510" Width="663" Loaded="Window_Loaded">
+        Title="Motor Manager" Height="624" Width="672" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -33,7 +33,7 @@
         </GroupBox>
         <Image Source="/Assignment;component/images/logo.png" Height="66" Margin="21,0,21,40" VerticalAlignment="Bottom" Grid.Column="1"/>
         <Label Content="Written By Jack Hillman" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Foreground="#FF919191" Height="26" Width="134" Grid.Column="1"/>
-        <Label x:Name="header" Content="Motor Manager - The manager that manages your motor!" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Roboto" FontSize="18.667" Foreground="#FF8D2008" Height="40" Width="545" Grid.ColumnSpan="2"/>
+        <Label x:Name="header" Content="Motor Manager - The manager that manages your motor!" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" FontWeight="Bold" FontFamily="Roboto" FontSize="18.667" Foreground="#FF8D2008" Height="40" Width="545" Grid.ColumnSpan="2"/>
         <Grid Margin="10,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="78" Width="178">
             <Label Content="Sub Total:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label Content="GST:" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top"/>
@@ -43,7 +43,7 @@
             <Label x:Name="total" HorizontalAlignment="Left" Margin="85,52,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
 
         </Grid>
-        <GroupBox x:Name="warranty" Header="Warranty" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,71,0,0" Height="151" Width="263">
+        <GroupBox x:Name="warranty" Header="Warranty" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,234,0,0" Height="151" Width="263">
             <StackPanel HorizontalAlignment="Left" Height="109" VerticalAlignment="Top" >
                 <RadioButton x:Name="war1" GroupName="war" IsChecked="True" Margin="10" Content="1 Year (Included)"/>
                 <RadioButton x:Name="war3" GroupName="war" Margin="10" Content="3 Years (+10%)"/>
@@ -51,12 +51,29 @@
             </StackPanel>
 
         </GroupBox>
-        <GroupBox x:Name="extras" Header="Extras" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,227,0,0" Width="263">
+        <GroupBox x:Name="extras" Header="Extras" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,390,0,0" Width="263">
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" >
                 <CheckBox x:Name="windowTinting" Margin="10" Content="Window Tinting ($150)" />
                 <CheckBox x:Name="ducoProtection" Margin="10" Content="Duco Protection ($180)" />
                 <CheckBox x:Name="gps" Margin="10" Content="GPS Navigational System ($320)" />
                 <CheckBox x:Name="soundSystem" Margin="10" Content="Delux Sound System ($350)" />
+            </StackPanel>
+
+        </GroupBox>
+        <Menu x:Name="menu" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="655" Grid.ColumnSpan="2" Background="White">
+            <MenuItem Header="File">
+                <MenuItem Header="Calculate" Click="Calculate_Totals"></MenuItem>
+                <MenuItem Header="Exit" Click="Close_Application"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" Click="Open_About"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <GroupBox x:Name="insurance" Header="Insurance" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10" Margin="214,76,0,0" Height="151" Width="263">
+            <StackPanel HorizontalAlignment="Left" Height="109" VerticalAlignment="Top" >
+                <RadioButton x:Name="ins0" GroupName="ins" IsChecked="True" Margin="10" Content="None (Included)"/>
+                <RadioButton x:Name="ins1" GroupName="ins" Margin="10" Content="Under 25 (+20%)"/>
+                <RadioButton x:Name="ins2" GroupName="ins" Margin="10" Content="Over 25 (+10%)"/>
             </StackPanel>
 
         </GroupBox>
