@@ -73,7 +73,6 @@ namespace Assignment
             sale.CalculateTotal(subTotal, gstTotal, total); // Calculate totals and apply to labels
             SaleList.Add(sale); // Add sale to list of sales
             dailyReport.IsEnabled = true; // Enable daily reports
-            MessageBox.Show(sale.ToString());
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
@@ -109,7 +108,8 @@ namespace Assignment
 
         private void View_Report(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Sale Count: " + Sale.ReportCount.ToString() + "\n\nTotal Sales: " + Sale.TotalSales.ToString("C")); // Show sales report
+            Summary sum = new Summary();
+            sum.ShowDialog();
         }
 
         private void Open_About(object sender, RoutedEventArgs e)

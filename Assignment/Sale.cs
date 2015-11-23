@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace Assignment
 {
-    class Sale
+    public class Sale
     {
         public decimal Price { get; set; }
         public decimal Trade { get; set; }
@@ -19,6 +19,7 @@ namespace Assignment
         public string Phone { get; set; }
         public static int ReportCount { get; set; } = 0;
         public static decimal TotalSales { get; set; } = 0m;
+        public static decimal Average { get; set; } = 0m;
 
         public Sale(TextBox _priceBox, TextBox _tradeBox, TextBox _name, TextBox _phone)
         {
@@ -78,6 +79,7 @@ namespace Assignment
 
             ReportCount++;
             TotalSales += Total;
+            Average = TotalSales / ReportCount;
 
             subTotal.Content = SubTotal.ToString("C");
             gstTotal.Content = GstTotal.ToString("C");
