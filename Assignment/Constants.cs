@@ -18,14 +18,14 @@ namespace Assignment
 
         #region Insurance
         // Insurance
-        public const decimal INSURANCE_U25 = 1.2m;
-        public const decimal INSURANCE_O25 = 1.1m;
+        public const decimal INSURANCE_U25 = 0.2m;
+        public const decimal INSURANCE_O25 = 0.1m;
         #endregion
 
         #region Warrenty
             // Warranty
-            public const decimal WARRANTY_3_YEARS = 1.1m;
-            public const decimal WARRANTY_5_YEARS = 1.2m;
+            public const decimal WARRANTY_3_YEARS = 0.1m;
+            public const decimal WARRANTY_5_YEARS = 0.2m;
         #endregion
 
         #region MISC

@@ -8,6 +8,15 @@ using System.Windows.Controls;
 
 namespace Assignment
 {
+
+    /*
+        Sale Class
+
+        For some reason I decided it would be 'better' to make each sale into its own object.
+        Technnically it works, and each object is injected into the SaleList list, but as
+        it stands right now I don't actually have any plans to save, export, review, modify
+        or anything else with them as it is :/
+    */
     public class Sale
     {
         public decimal Price { get; set; }
@@ -17,9 +26,13 @@ namespace Assignment
         public decimal Total { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
-        public static int ReportCount { get; set; } = 0;
-        public static decimal TotalSales { get; set; } = 0m;
-        public static decimal Average { get; set; } = 0m;
+        public decimal Warranty { get; set; }
+        public decimal Insurance { get;  set;}
+        public decimal Extras { get; set; }
+        public static int ReportCount { get; set; }
+        public static decimal TotalSales { get; set; }
+
+        private List<Extra> extraList = new List<Extra>();
 
         public Sale(TextBox _priceBox, TextBox _tradeBox, TextBox _name, TextBox _phone)
         {
@@ -32,18 +45,18 @@ namespace Assignment
             }
             catch
             {
-                throw;
+                throw; // Throw Parse error to be caught by parent
             }
         }
 
         private decimal Parse(TextBox txt)
         {
             decimal var;
-
             try
             {
                 if (!String.IsNullOrWhiteSpace(txt.Text))
                 {
+                    // Try to parse param if it's not null
                     var = decimal.Parse(txt.Text);
                 }
                 else
@@ -53,43 +66,108 @@ namespace Assignment
             }
             catch
             {
+                // Clear and focus on error location. Prompt user as to where the error occurred using the ToolTip
                 txt.Clear();
                 txt.Focus();
                 throw new Exception("Error! Value of " + txt.ToolTip.ToString() + " required as a decimal");
             }
-
             return var;
         }
 
-        public void CalculateTotal(Label subTotal, Label gstTotal, Label total)
+        public void OutputTotal(Label subTotal, Label gstTotal, Label total)
         {
-            if (Trade > Price)
-            {
+            // Calculate subtotal
+            SubTotal = Price - Trade + Warranty + Extras + Insurance;
+            if (SubTotal < 0) {
+                MessageBox.Show("Total is less than 0, no refunds will be given.");
                 SubTotal = 0;
-                MessageBox.Show("Trade-In is greater than Vehicle Price, no refund will be given");
-            }
-            else
-            {
-                SubTotal = Price - Trade;
             }
 
-            GstTotal = Price * Constants.GST;
-
+            /*
+                For some reason GST is calculated based on the SubTotal, so you could buy
+                an infinitely priced car and pay no tax as long as you trade in an infitely
+                priced car in return.
+            */
+            AddGST();
             Total = SubTotal + GstTotal;
 
-            ReportCount++;
-            TotalSales += Total;
-            Average = TotalSales / ReportCount;
+            ReportCount++; // Iterate ReportCount
+            TotalSales += Total; // Add new sale to TotalSales
 
+            // Apply figures
             subTotal.Content = SubTotal.ToString("C");
             gstTotal.Content = GstTotal.ToString("C");
             total.Content = Total.ToString("C");
         }
 
-        public override string ToString()
+        private class Extra
         {
-            string returnString = String.Format("Name {0}, Phone {1}, Price {2}, Trade {3}, Total {4}", Name, Phone, Price, Trade, Total);
-            return returnString;
+            public bool Selected { get; set; }
+            public decimal Price { get; set; }
+            public string Description { get; set; }
+
+            public Extra(bool selected, decimal price, string description) // Constructor
+            {
+                Selected = selected;
+                Price = price;
+                Description = description;
+            }
+        }
+
+        /* 
+            Extras Constructor
+
+            Extras are created as objects, I had planned on doing some sort of
+            proper sale object, including sub objects for the extras.
+        */
+        public void AddExtras(bool tinting, bool duco, bool gps, bool sound)
+        {
+            /*
+                Add each extra to the extraList list.
+                Each extra also has a description.
+                This currently does nothing :)
+            */
+            extraList.Add(new Extra(tinting, Constants.WINDOW_TINTING, "Window Tinting"));
+            extraList.Add(new Extra(duco, Constants.DUCO_PROTECTION, "Duco Protection"));
+            extraList.Add(new Extra(gps, Constants.GPS_NAVIGATIONAL_SYSTEM, "GPS Navigational System"));
+            extraList.Add(new Extra(sound, Constants.DELUX_SOUND_SYSTEM, "Delux Sound System"));
+
+            GetExtras(); // Calculate Extras
+        }
+
+        public void GetExtras()
+        {
+            decimal total = 0m;
+            foreach (Extra e in extraList)
+            {
+                /*
+                    If Extra (e) is selected then increment total by e.Price
+                    Else increment by 0
+                */
+                total += (e.Selected) ? e.Price : 0;
+            }
+            Extras = total;
+        }
+
+        public void AddInsurance(decimal insurance)
+        {
+            // Calculate Insurance
+            // This is largely superficial
+            Insurance = (Price + Extras) * insurance;
+        }
+        public void AddWarranty(decimal warranty)
+        {
+            // Calculate Warranty
+            // This is largely superficial
+            Warranty = Price * warranty;
+        }
+
+        public void AddGST()
+        {
+            // Calculate GST
+            // This is largely superficial
+            // Also SubToal, WTF
+            GstTotal = SubTotal * Constants.GST;
         }
     }
 }
