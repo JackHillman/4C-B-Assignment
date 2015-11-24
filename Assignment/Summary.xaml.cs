@@ -31,9 +31,10 @@ namespace Assignment
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            salesCount.Content = Sale.ReportCount;
-            salesTotal.Content = Sale.TotalSales;
-            salesAverage.Content = Sale.Average;
+            decimal average = Sale.TotalSales / Sale.ReportCount;
+            salesCount.Content = Sale.ReportCount.ToString();
+            salesTotal.Content = Sale.TotalSales.ToString("C");
+            salesAverage.Content = average.ToString("C");
         }
     }
 }

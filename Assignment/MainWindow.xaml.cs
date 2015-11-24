@@ -21,8 +21,8 @@ namespace Assignment
     public partial class MainWindow : Window
     {
 
-        List<Sale> SaleList; // Init Sale List
-        Sale sale; // Init sale
+        List<Sale> SaleList; // Create Sale List
+        Sale sale; // Create sale
 
         public MainWindow()
         {
@@ -58,21 +58,38 @@ namespace Assignment
 
         private void Calculate_Totals(object sender, RoutedEventArgs e)
         {
+            decimal insurance = GetInsurance(); // Return insurance fraction
+            decimal warranty = GetWarranty(); // Return warranty fraction
 
+            if (String.IsNullOrWhiteSpace(vehiclePrice.Text)) // Make sure vehicle price has been entered
+            {
+                MessageBox.Show("Error: Vehicle price is required!");
+                vehiclePrice.Focus();
+                return;
+            }
             try
             {
-                sale = new Sale(vehiclePrice, tradeInValue, customerName, customerPhone); // Try to init
+                sale = new Sale(vehiclePrice, tradeInValue, customerName, customerPhone); // Try to init values
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message); // Show error message
                 return; // Exit
             }
 
-            sale.Price = getInsurance(sale.Price); // Add insurance and warranty
-            sale.CalculateTotal(subTotal, gstTotal, total); // Calculate totals and apply to labels
-            SaleList.Add(sale); // Add sale to list of sales
-            dailyReport.IsEnabled = true; // Enable daily reports
+            sale.AddWarranty(warranty); // Add warranty to sale
+            sale.AddExtras((bool)windowTinting.IsChecked, (bool)ducoProtection.IsChecked, (bool)gps.IsChecked, (bool)soundSystem.IsChecked); // Add extras to sale
+            sale.AddInsurance(insurance); // Add Insurance to sale
+            sale.OutputTotal(subTotal, gstTotal, total); // Output calculated totals
+            dailyReport.IsEnabled = true; // Enable Daily Reports
+            dailyReport_Menu.IsEnabled = true;
+
+            SaleList.Add(sale); // Add Sale to SaleList
+            saleSelector.IsEnabled = true; // Enable Sale Selector
+            saleSelector.ItemsSource = GetSaleList(); // Set ItemsSource to list of sales
+            saleSelector.SelectedIndex = SaleList.Count - 1; // Select new sale
+
+            saleSummary.ItemsSource = sale.CreateSummary(); // Outupt Summary
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
@@ -89,59 +106,74 @@ namespace Assignment
                 total,
             };
 
-            // Prompt user if they want to reset
-            if (MessageBox.Show("Are you sure you want to reset?", "Reset form", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-            {
-                // Clear all values
-                foreach (TextBox t in textBox) { t.Clear(); }
-                foreach (Label l in label) { l.Content = null; }
-                customerDetails.IsEnabled = true; // Enable Customer Details
-                customerName.Focus(); // Set focus
-            }
+            // Clear all values
+            foreach (TextBox t in textBox) { t.Clear(); }
+            foreach (Label l in label) { l.Content = null; }
+            customerDetails.IsEnabled = true; // Enable Customer Details
+            customerName.Focus(); // Set focus
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             customerName.Focus(); // Set focus to Customer Name Textbox
-            SaleList = new List<Sale>(); // Init list of sales
+            SaleList = new List<Sale>(); // Init list of
+            Sale.ReportCount = 0;
+            Sale.TotalSales = 0;
         }
 
         private void View_Report(object sender, RoutedEventArgs e)
         {
-            Summary sum = new Summary();
-            sum.ShowDialog();
+            Summary sum = new Summary(); // Create new summary  window
+            sum.ShowDialog(); // Open summary window as dialog
         }
 
         private void Open_About(object sender, RoutedEventArgs e)
         {
-            About about = new About(); // Init about window
+            About about = new About(); // Create new about window
             about.ShowDialog(); // Open about window as dialog
         }
 
-        private decimal getExtras()
-        {
-            decimal total = 0;
-            if (!(bool)windowTinting.IsChecked && !(bool)ducoProtection.IsChecked && !(bool)gps.IsChecked && !(bool)soundSystem.IsChecked) { return 0m; } // If all are unchecked return 0
-            else
-            { 
-                if ((bool)windowTinting.IsChecked) { total += Constants.WINDOW_TINTING; } // If windowTiniting is checked add 150 to total
-                if ((bool)ducoProtection.IsChecked) { total += Constants.DUCO_PROTECTION; } // If ducoProtection is checked add 180 to total
-                if ((bool)gps.IsChecked) { total += Constants.GPS_NAVIGATIONAL_SYSTEM; } // If gps is checked add 320 to total
-                if ((bool)soundSystem.IsChecked) { total += Constants.DELUX_SOUND_SYSTEM; } // If soundSystem is checked add 350 to total
-                return total; // return total
-            }
+        private decimal GetInsurance()
+        {  
+            // Decide what the insurance percent is based on the insurance checkboxes
+            decimal insurance = 0;
+            if((bool)ins1.IsChecked) { insurance = Constants.INSURANCE_U25; }
+            else if ((bool)ins2.IsChecked) { insurance = Constants.INSURANCE_O25; }
+            return insurance;
         }
 
-        private decimal getInsurance(decimal price)
+        private decimal GetWarranty()
         {
-            // Add insurance
-            if((bool)ins1.IsChecked) { price *= Constants.INSURANCE_U25; }
-            else if ((bool)ins2.IsChecked) { price *= Constants.INSURANCE_O25; }
-            // Add warranty
-            if ((bool)war3.IsChecked) { price *= Constants.WARRANTY_3_YEARS; }
-            else if ((bool)war5.IsChecked) { price *= Constants.WARRANTY_5_YEARS; }
-            price += getExtras(); // Calculate Extras
-            return price; // Return calculated price
+            // Decide what the warranty is based on the warranty check boxes
+            decimal warranty = 0;
+            if ((bool)war3.IsChecked) { warranty = Constants.WARRANTY_3_YEARS; }
+            else if ((bool)war5.IsChecked) { warranty = Constants.WARRANTY_5_YEARS; }
+            return warranty;
+        }
+
+        private string[] GetSaleList()
+        {
+            string[] saleList = new string[SaleList.Count];
+            int i = 0;
+            foreach (Sale s in SaleList)
+            {
+                if (String.IsNullOrWhiteSpace(s.Name)) { saleList[i] = "Unnamed - "; }
+                else { saleList[i] = s.Name + " - "; }
+                saleList[i] += s.Total.ToString("C");
+                i++;
+            }
+            return saleList;
+        }
+
+        private Sale GetSale(int sale)
+        {
+            Sale newSale = SaleList[sale];
+            return newSale;
+        }
+
+        private void saleSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            saleSummary.ItemsSource = GetSale(saleSelector.SelectedIndex).CreateSummary();
         }
     }
 }
