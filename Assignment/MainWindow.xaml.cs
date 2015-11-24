@@ -118,6 +118,8 @@ namespace Assignment
             customerName.Focus(); // Set focus to Customer Name Textbox
             SaleList = new List<Sale>(); // Init list of
             Sale.ReportCount = 0;
+            SaleList = new List<Sale>(); // Init list of sales
+            Sale.ReportCount = 0; // Initialise Values
             Sale.TotalSales = 0;
         }
 

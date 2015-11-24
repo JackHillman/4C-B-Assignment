@@ -232,5 +232,12 @@ namespace Assignment
             a[22] = "Thank you for using Motor Manager!";
             return a;
         }
+        // Calculate GST
+        // This is largely superficial
+        // Also SubToal, WTF
+        public void GetGST()
+        {
+            GstTotal = SubTotal * Constants.GST;
+        }
     }
 }

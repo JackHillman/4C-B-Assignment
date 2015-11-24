@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Assignment.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Motor Manager" Height="624" Width="943.5" Loaded="Window_Loaded">
+        Title="Motor Manager" Height="624" Width="928.5" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -87,3 +87,4 @@
 
     </Grid>
 </Window>
+
