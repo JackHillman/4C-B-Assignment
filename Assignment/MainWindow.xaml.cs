@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,12 @@ namespace Assignment
             if (!(String.IsNullOrEmpty(customerName.Text) || String.IsNullOrEmpty(customerPhone.Text))) // If customer name and phone are not empty
             {
                 customerDetails.IsEnabled = false; // Disable the customer details groupbox
+                Customer newCustomer = new Customer(customerName.Text, customerPhone.Text);
+                if (newCustomer.Check())
+                {
+                    newCustomer.SaveCustomer();
+                    customerPhone.ItemsSource = Customer.Phones;
+                }
                 vehiclePrice.Focus(); // Set focus
             }
             else
@@ -96,7 +103,6 @@ namespace Assignment
         {
             TextBox[] textBox = new TextBox[] {
                 customerName,
-                customerPhone,
                 vehiclePrice,
                 tradeInValue,
             };
@@ -109,18 +115,20 @@ namespace Assignment
             // Clear all values
             foreach (TextBox t in textBox) { t.Clear(); }
             foreach (Label l in label) { l.Content = null; }
+            customerPhone.Text = "";
             customerDetails.IsEnabled = true; // Enable Customer Details
             customerName.Focus(); // Set focus
+            saleSummary.ItemsSource = null; // Clear Listbox
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             customerName.Focus(); // Set focus to Customer Name Textbox
-            SaleList = new List<Sale>(); // Init list of
-            Sale.ReportCount = 0;
             SaleList = new List<Sale>(); // Init list of sales
             Sale.ReportCount = 0; // Initialise Values
             Sale.TotalSales = 0;
+            Customer.FillClass();
+            customerPhone.ItemsSource = Customer.Phones;
         }
 
         private void View_Report(object sender, RoutedEventArgs e)
@@ -176,6 +184,93 @@ namespace Assignment
         private void saleSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             saleSummary.ItemsSource = GetSale(saleSelector.SelectedIndex).CreateSummary();
+        }
+
+        private class Customer
+        {
+            static List<Customer> Customers = new List<Customer>(); // List to store customers
+
+            private string Name;
+            private string Phone;
+            private static string file = "customer.txt"; // File location
+
+            public static void FillClass() // Creates objects from file and inserts them into Customers list
+            {
+                StreamReader sr = new StreamReader(file);
+                string name = sr.ReadLine();
+                string phone = sr.ReadLine();
+                while (name != null && phone != null) // While name and phone aren't null
+                {
+                    new Customer(name, phone); // Create new customer
+                    name = sr.ReadLine();
+                    phone = sr.ReadLine();
+                }
+                sr.Close(); // Close file
+            }
+
+            public Customer(string name, string phone) // Customer constructor
+            {
+                Name = name;
+                Phone = phone;
+                Customers.Add(this); // Add new customer to list
+            }
+
+            public static string GetName(string phone) // Get name from list of customers
+            {
+                string name = null;
+                foreach (Customer c in Customers)
+                {
+                    if (c.Phone == phone) // If match is found return the name
+                    {
+                        name = c.Name;
+                    }
+                }
+                return name;
+            }
+
+            static public string[] Phones // Get array of phone numbers for combobox
+            {
+                get
+                {
+                    string[] phones = new string[Customers.Count]; // Create array
+                    int i = 0;
+                    foreach (Customer c in Customers)
+                    {
+                        phones[i] = c.Phone; // Add customer phone to array
+                        i++;
+                    }
+                    return phones; // Return array
+                }
+            }
+
+            public void SaveCustomer() // Save customer to file
+            {
+                if (MessageBox.Show("Do you want to save this customer?", "Save Customer", MessageBoxButton.YesNo) == MessageBoxResult.Yes) // Prompt user to save
+                {
+                    StreamWriter sw = new StreamWriter(file, true);
+                    sw.WriteLine(this.Name);
+                    sw.WriteLine(this.Phone);
+                    sw.Close();
+                }
+            }
+
+            public bool Check() // Check to see if current customer is a new customer
+            {
+                bool unique = true;
+                foreach (Customer c in Customers)
+                {
+                    if ((c.Name == this.Name && c.Phone == this.Phone) && Customers.IndexOf(c) != Customers.Count-1) // If customer is not unique
+                    {
+                        unique = false;
+                    }
+                }
+                return unique;
+            }
+        }
+
+        private void customerPhone_SelectionChanged(object sender, SelectionChangedEventArgs e) // On selection change
+        {
+            customerName.Text = Customer.GetName(customerPhone.SelectedValue?.ToString()); // Set customer name to GetName() if selcted value is not null
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Assignment
 
         private List<Extra> extraList = new List<Extra>();
 
-        public Sale(TextBox _priceBox, TextBox _tradeBox, TextBox _name, TextBox _phone)
+        public Sale(TextBox _priceBox, TextBox _tradeBox, TextBox _name, ComboBox _phone)
         {
             try
             {
