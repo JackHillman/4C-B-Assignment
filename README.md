@@ -9,3 +9,5 @@ E.g. v0.1 is Part 1, v0.4 is Part 4
 [Part 2](https://github.com/JackHillman/4C-B-Assignment/archive/0.2.zip)
 
 [Part 3](https://github.com/JackHillman/4C-B-Assignment/archive/0.3.zip)
+
+[Part 4](https://github.com/JackHillman/4C-B-Assignment/archive/0.4.zip)
